@@ -19,7 +19,7 @@ exports.auth = (req, res, next) => {
     return res.status(401)
     .json({
         status: 'error',
-        error: `${error}`,
+        error: 'Unauthorized',
     });
    }
 }

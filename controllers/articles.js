@@ -143,6 +143,13 @@ exports.updateArticle = (req, res) => {
   const { article } = req.body;
   const { authorId } = req.body;
 
+  if (articleTitle === undefined || article === undefined || authorId === undefined) {
+    return res.status(400)
+            .json({
+              status: 'error',
+              error: 'All fields are required',
+            });
+  }
   pool.query(`SELECT * FROM lu_articles WHERE article_id='${articleId}' AND author_id='${authorId}'`)
     .then(
       ({ rows }) => {
@@ -189,7 +196,7 @@ exports.updateArticle = (req, res) => {
 exports.deleteArticle = (req, res) => {
   const { articleId } = req.params;
   const { authorId } = req.body;
-  pool.query(`SELECT * FROM alu_rticles WHERE article_id='${articleId}' AND author_id='${authorId}'`)
+  pool.query(`SELECT * FROM lu_articles WHERE article_id='${articleId}' AND author_id='${authorId}'`)
     .then(
       ({ rows }) => {
         if (rows.length === 0) {
