@@ -11,6 +11,7 @@ exports.userTable = () => {
         reg_no VARCHAR(100) NOT NULL,
         password VARCHAR(255) NOT NULL,
         degree_course VARCHAR(255),
+        reset_password_token VARCHAR(255),
         UNIQUE(email),
         UNIQUE(reg_no),
         PRIMARY KEY(user_id)

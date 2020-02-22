@@ -2,6 +2,15 @@ const pool = require('../middlewares/config-pool');
 const bcrypt = require('bcrypt');
 const uuid = require('uuid');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+       users: process.env.NODEMAILER_USER,
+       password: process.env.NODEMAILER_PASSWORD
+    }
+})
 
 exports.createUser = (req, res) => {
     const userId = uuid.v4();
@@ -127,3 +136,208 @@ exports.signIn =(req, res) => {
         }
     )
 }
+exports.changePassword = (req, res) => {
+    // This can either be email or registeration number
+    const { uid } = req.body;
+    const { currentPassword } = req.body;
+    const { newPassword } = req.body;
+    if (uid === undefined || currentPassword === undefined || newPassword === undefined) {
+      return res.status(400)
+        .json({
+          status: 'error',
+          error: 'All fields are required',
+        });
+    }
+    pool.query(`SELECT * FROM lu_users WHERE email='${uid}' OR reg_no='${uid}'`)
+      .then(
+        ({ rows }) => {
+          if (rows.length === 0) {
+            return res.status(401)
+              .json({
+                status: 'error',
+                error: 'Unauthorized',
+              });
+          }
+          const dbPassword = rows.map((data) => data.password).toString();
+          return bcrypt.compare(currentPassword, dbPassword)
+            .then(
+              (valid) => {
+                if (!valid) {
+                  return res.status(401)
+                    .json({
+                      status: 'error',
+                      error: 'Unauthorized',
+                    });
+                }
+                return bcrypt.hash(newPassword, 10)
+                  .then(
+                    (hash) => pool.query(`UPDATE lu_users SET password='${hash}' WHERE (email='${uid}' OR reg_no='${uid}')`)
+                      .then(
+                        () => {
+                          res.status(200)
+                            .json({
+                              status: 'success',
+                              message: 'Password has been successfully changed',
+                            });
+                        },
+                      )
+                      .catch(
+                        (error) => {
+                          res.status(501)
+                            .json({
+                              status: 'error',
+                              error: `${error}`,
+                            });
+                        },
+                      ),
+                  )
+                  .catch(
+                    (error) => {
+                      res.status(501)
+                        .json({
+                          status: 'error',
+                          error: `${error}`,
+                        });
+                    },
+                  );
+              },
+            );
+        },
+      )
+      .catch(
+        (error) => {
+          res.status(501)
+            .json({
+              status: 'error',
+              error: `${error}`,
+            });
+        },
+      );
+  };
+  
+  exports.forgotPassword = (req, res) => {
+    const resetPasswordToken = crypto.randomBytes(20).toString('hex');
+    const { email } = req.body;
+    const mailOptions = {
+      from: `${process.env.NODEMAILER_USER}`,
+      to: `${email}`,
+      subject: 'Link To Reset Password',
+      text: 'You are receiving this email because either you( or someone else) have requested to change password\n'
+          + 'If you did not request, please ignore and your password for LU Social Net will remain unchaged\n'
+          + 'Click the link below to reset password\n\n'
+          + `http://localhost:5000/${resetPasswordToken}.`,
+    };
+    pool.query(`SELECT * FROM lu_users WHERE email='${email}'`)
+      .then(
+        ({ rows }) => {
+          if (rows.length === 0) {
+            return res.status(401)
+              .json({
+                status: 'error',
+                error: 'Unauthorized',
+              });
+               }
+          return pool.query(`UPDATE lu_users SET reset_password_token='${resetPasswordToken}' WHERE email='${email}'`)
+            .then(
+              () => {
+                transporter.sendMail(mailOptions, (error, response) => {
+                  if (error) {
+                    return res.status(500)
+                      .json({
+                        status: 'error',
+                        error: `${error}`,
+                      });
+                  }
+                  console.log('Response', response);
+                  return res.status(200)
+                    .json({
+                      status: 'success',
+                      data: {
+                        message: 'Recovery Link Sent',
+                        resetPasswordToken,
+                      },
+                    });
+                });
+              },
+            )
+            .catch(
+              (error) => {
+                res.status(500)
+                  .json({
+                    status: 'error',
+                    error: `${error}`,
+                  });
+              },
+            );
+        },
+      )
+      .catch(
+        (error) => {
+          res.status(500)
+            .json({
+              status: 'error',
+              error: `${error}`,
+            });
+        },
+      );
+  };
+  
+  exports.resetPassword = (req, res) => {
+    const { password } = req.body;
+    const { resetPasswordToken } = req.body;
+  
+    pool.query(`SELECT * FROM lu_users WHERE reset_password_token='${resetPasswordToken}'`)
+      .then(
+        ({ rows }) => {
+          if (!rows) {
+            return res.status
+              .json({
+                status: 'error',
+                error: 'Forbidden',
+              });
+          }
+          const email = rows.map((data) => data.email).toString();
+          return bcrypt.hash(password, 10)
+            .then(
+              (hash) => pool.query(`UPDATE lu_users SET password='${hash}', reset_password_token=null WHERE email='${email}'`)
+                .then(
+                  () => {
+                    res.status(200)
+                      .json({
+                        status: 'success',
+                        message: 'Password has successfully been reset',
+                      });
+                  },
+                )
+                .catch(
+                  (error) => {
+                    res.status(500)
+                      .json({
+                        status: 'error',
+                        error: `${error}`,
+                      });
+                  },
+                ),
+            )
+            .catch(
+              (error) => {
+                res.status(501)
+                  .json({
+                    status: 'error',
+                    error: `${error}`,
+                  });
+              },
+            );
+        },
+      )
+      .catch(
+        (error) => {
+          res.status(501)
+            .json({
+              status: 'error',
+              error: `${error}`,
+            });
+        },
+      );
+  };
+  
