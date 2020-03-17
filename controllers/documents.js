@@ -3,12 +3,20 @@ const uuid = require('uuid');
 const fs = require('fs');
 
 exports.uploadDoc = (req, res) => {
+    console.log(req.file)
+    if (req.file === undefined) {
+        return res.status(400)
+                .json({
+                    status:'error',
+                    error: 'Select A file'
+                })
+    }
     const docId = uuid.v4();
     const url = `${req.protocol}://${req.get('host')}`;
     const docUrl = `${url}/uploaded_docs/${req.file.filename}`;
-    const { docTitle } = req.body;
-    const { authorId } = req.body;
+    const { docTitle, authorId } = req.body;
     
+
     if(docUrl === undefined || docTitle === undefined || authorId === undefined) {
         return res.status(400)
             .json({

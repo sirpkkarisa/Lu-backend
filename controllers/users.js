@@ -3,25 +3,20 @@ const bcrypt = require('bcrypt');
 const uuid = require('uuid');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
+const crypto = require('crypto');
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    // host: 'gsmtp.gmail.com',
+    service:'gmail',
     auth: {
-       users: process.env.NODEMAILER_USER,
-       password: process.env.NODEMAILER_PASSWORD
+       user: process.env.NODEMAILER_USER,
+       pass: process.env.NODEMAILER_PASSWORD
     }
 })
 
 exports.createUser = (req, res) => {
     const userId = uuid.v4();
-    const { firstName } = req.body;
-    const { lastName } = req.body;
-    const { email } = req.body;
-    const { gender } = req.body;
-    const { regNo } = req.body;
-    const { password } = req.body;
-    const { degreeCourse } = req.body;
-
+    const { firstName, lastName, email, gender, regNo, password, degreeCourse } = req.body;
     if (firstName === undefined || lastName === undefined || email === undefined || gender === undefined || regNo === undefined || password === undefined || degreeCourse === undefined ) {
         return res.status(400)
             .json({
@@ -68,8 +63,7 @@ exports.createUser = (req, res) => {
         );
 };
 exports.signIn =(req, res) => {
-    const { uid } = req.body;
-    const { password } = req.body;
+    const { uid, password } = req.body;
     
     if (uid === undefined || password === undefined) {
         return res.status(401)
@@ -138,9 +132,8 @@ exports.signIn =(req, res) => {
 }
 exports.changePassword = (req, res) => {
     // This can either be email or registeration number
-    const { uid } = req.body;
-    const { currentPassword } = req.body;
-    const { newPassword } = req.body;
+    const { uid, currentPassword, newPassword } = req.body;
+
     if (uid === undefined || currentPassword === undefined || newPassword === undefined) {
       return res.status(400)
         .json({

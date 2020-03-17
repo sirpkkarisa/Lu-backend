@@ -1,12 +1,12 @@
 const uuid = require('uuid');
 const pool = require('../middlewares/config-pool');
 
-exports.createArticle = (req, res) => {
-  const articleId = uuid.v4();
-  const { articleTitle, article, authorId } = req.body;
-
+exports.createComment = (req, res) => {
+  const commentId = uuid.v4();
+  const { articleId } = req.params;
+  const {  comment, authorId } = req.body;
   
-  if (articleTitle === undefined || article === undefined || authorId === undefined) {
+  if (articleId === undefined || comment === undefined || authorId === undefined) {
       return res.status(400)
       .json({
           status: 'error',
@@ -23,10 +23,10 @@ pool.query(`SELECT * FROM lu_users WHERE user_id='${authorId}'`)
                     error: 'Unauthorized',
                 })
             }
-          pool.query('INSERT INTO lu_articles VALUES($1,$2,$3,$4)', [articleId, articleTitle, article, authorId])
+          pool.query('INSERT INTO lu_comments VALUES($1,$2,$3,$4)', [commentId, articleId, comment, authorId])
          .then(
              () => {
-         pool.query('SELECT * FROM lu_articles WHERE article_id=$1', [articleId])
+         pool.query('SELECT * FROM lu_comments WHERE comment_id=$1', [commentId])
             .then(
             ({ rows }) => {
               if (rows.length === 0) {
@@ -40,15 +40,15 @@ pool.query(`SELECT * FROM lu_users WHERE user_id='${authorId}'`)
                 .json({
                   status: 'success',
                   data: {
-                    message: 'New article created!',
-                    article: rows,
+                    message: 'you have successfully added a comment!',
+                    comment: rows,
                   },
                 });
             },
           )
           .catch(
             (error) => {
-              res.status(501)
+              res.status(500)
                 .json({
                   status: 'error',
                   error: `${error}`,
@@ -59,7 +59,7 @@ pool.query(`SELECT * FROM lu_users WHERE user_id='${authorId}'`)
     )
     .catch(
       (error) => {
-        res.status(501)
+        res.status(500)
           .json({
             status: 'error',
             error: `${error}`,
@@ -70,7 +70,7 @@ pool.query(`SELECT * FROM lu_users WHERE user_id='${authorId}'`)
     )
     .catch(
         (error) => {
-            res.status(501)
+            res.status(500)
             .json({
                 status: 'error',
                 error: `${error}`
@@ -79,15 +79,15 @@ pool.query(`SELECT * FROM lu_users WHERE user_id='${authorId}'`)
     )
   
 };
-exports.getArticles = (req, res) => {
-  pool.query('SELECT * FROM lu_articles')
+exports.getComments = (req, res) => {
+  pool.query('SELECT * FROM lu_comments')
     .then(
       ({ rows }) => {
         if (rows.length === 0) {
           return res.status(404)
             .json({
               status: 'error',
-              error: 'No articles',
+              error: 'No comments',
             });
         }
         return res.status(200)
@@ -107,16 +107,16 @@ exports.getArticles = (req, res) => {
       },
     );
 };
-exports.getArticle = (req, res) => {
-  const { articleId } = req.params;
-  pool.query('SELECT * FROM lu_articles WHERE article_id=$1', [articleId])
+exports.getComment = (req, res) => {
+  const { commentId } = req.params;
+  pool.query('SELECT * FROM lu_comments WHERE comment_id=$1', [commentId])
     .then(
       ({ rows }) => {
         if (rows.length === 0) {
           return res.status(404)
             .json({
               status: 'error',
-              error: 'Article Not Found',
+              error: 'comment Not Found',
             });
         }
         return res.status(200)
@@ -136,64 +136,11 @@ exports.getArticle = (req, res) => {
       },
     );
 };
-exports.updateArticle = (req, res) => {
-  const { articleId } = req.params;
-  const { articleTitle, article, authorId} = req.body;
 
-  if (articleTitle === undefined || article === undefined || authorId === undefined) {
-    return res.status(400)
-            .json({
-              status: 'error',
-              error: 'All fields are required',
-            });
-  }
-  pool.query(`SELECT * FROM lu_articles WHERE article_id='${articleId}' AND author_id='${authorId}'`)
-    .then(
-      ({ rows }) => {
-        if (rows.length === 0) {
-          return res.status(401)
-            .json({
-              status: 'error',
-              error: 'Unauthorized',
-            });
-        }
-        return pool.query(`UPDATE lu_articles SET article_title='${articleTitle}',article='${article}' WHERE article_id='${articleId}' AND author_id='${authorId}'`)
-          .then(
-            () => res.status(200)
-              .json({
-                status: 'success',
-                data: {
-                  message: 'Article has been successfully updated',
-                  articleTitle,
-                  article,
-                },
-              }),
-          )
-          .catch(
-            (error) => {
-              res.status(501)
-                .json({
-                  status: 'error',
-                  error: `${error}`,
-                });
-            },
-          );
-      },
-    )
-    .catch(
-      (error) => {
-        res.status(501)
-          .json({
-            status: 'error',
-            error: `${error}`,
-          });
-      },
-    );
-};
-exports.deleteArticle = (req, res) => {
-  const { articleId } = req.params;
+exports.deleteComment = (req, res) => {
+  const { commentId } = req.params;
   const { authorId } = req.body;
-  pool.query(`SELECT * FROM lu_articles WHERE article_id='${articleId}' AND author_id='${authorId}'`)
+  pool.query(`SELECT * FROM lu_comments WHERE comment_id='${articleId}' AND author_id='${authorId}'`)
     .then(
       ({ rows }) => {
         if (rows.length === 0) {
@@ -203,14 +150,14 @@ exports.deleteArticle = (req, res) => {
               error: 'Unauthorized',
             });
         }
-        return pool.query(`DELETE FROM lu_articles WHERE article_id='${articleId}' AND author_id='${authorId}'`)
+        return pool.query(`DELETE FROM lu_comments WHERE comment_id='${articleId}' AND author_id='${authorId}'`)
           .then(
             () => {
               res.status(200)
                 .json({
                   status: 'success',
                   data: {
-                    message: 'Article successfully deleted',
+                    message: 'comment successfully deleted',
                   },
                 });
             },

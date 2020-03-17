@@ -1,3 +1,4 @@
 node_modules
 .env
 filters.js
+uploaded_documents
