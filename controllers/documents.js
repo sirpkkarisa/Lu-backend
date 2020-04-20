@@ -3,7 +3,6 @@ const uuid = require('uuid');
 const fs = require('fs');
 
 exports.uploadDoc = (req, res) => {
-    console.log(req.file)
     if (req.file === undefined) {
         return res.status(400)
                 .json({

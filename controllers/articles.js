@@ -119,12 +119,29 @@ exports.getArticle = (req, res) => {
               error: 'Article Not Found',
             });
         }
-        return res.status(200)
+        pool.query(`SELECT * FROM lu_comments WHERE article_id='${articleId}'`)
+            .then(
+            (response) =>  {
+              return res.status(200)
           .json({
             status: 'success',
             data: rows,
+              comments: response.rows,
           });
-      },
+
+            }
+
+              )
+            .catch(
+              (error)=> {
+                res.status(501)
+          .json({
+            status: 'error',
+            error: `${error}`,
+          });
+              }
+              )
+              },
     )
     .catch(
       (error) => {
@@ -139,7 +156,7 @@ exports.getArticle = (req, res) => {
 exports.updateArticle = (req, res) => {
   const { articleId } = req.params;
   const { articleTitle, article, authorId} = req.body;
-
+  console.log('hhw')
   if (articleTitle === undefined || article === undefined || authorId === undefined) {
     return res.status(400)
             .json({
@@ -203,28 +220,62 @@ exports.deleteArticle = (req, res) => {
               error: 'Unauthorized',
             });
         }
-        return pool.query(`DELETE FROM lu_articles WHERE article_id='${articleId}' AND author_id='${authorId}'`)
-          .then(
-            () => {
-              res.status(200)
-                .json({
-                  status: 'success',
-                  data: {
-                    message: 'Article successfully deleted',
-                  },
-                });
-            },
-          )
-          .catch(
-            (error) => {
-              res.status(501)
-                .json({
-                  status: 'error',
-                  error: `${error}`,
-                });
-            },
-          );
-      },
+        pool.query(`SELECT * FROM lu_comments WHERE article_id='${articleId}' AND author_id='${authorId}'`)
+            .then(
+              (rs) => {
+                if (rs.rowCount === 0) {
+                  return;
+                }
+              return pool.query(`DELETE FROM lu_articles WHERE article_id='${articleId}' AND author_id='${authorId}'`)
+                        .then(
+                          () => {
+                            pool.query(`DELETE FROM lu_comments WHERE article_id='${articleId}' AND author_id='${authorId}'`)
+                                .then(
+                                  () => {
+                                    res.status(200)
+                              .json({
+                                status: 'success',
+                                data: {
+                                  message: 'Article successfully deleted',
+                                },
+                              });
+
+                                  }
+                                  )
+                                .catch(
+                                  (error) => {
+                                    res.status(501)
+                                      .json({
+                                        status:'error',
+                                        error: `${error}`
+                                      })
+                                  }
+                                  )
+                            
+                          },
+                        )
+                        .catch(
+                          (error) => {
+                            res.status(501)
+                              .json({
+                                status: 'error',
+                                error: `${error}`,
+                              });
+                          },
+                        );
+
+              }
+              )
+            .catch(
+              (error) => {
+                res.status(500)
+                  .json({
+                    status:'error',
+                    error: `${error}`
+                  })
+              }
+              )
+              },
     )
     .catch(
       (error) => {

@@ -20,7 +20,6 @@ app.use((req, res, next) => {
 });
 
 
-// app.use(bodyParser({extended: false}));
 app.use(bodyParser.json());
 app.use('/uploaded_docs',express.static(path.join(__dirname, 'uploaded_documents')))
 app.use('/auth', usersRoutes);
