@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="./src/resources/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/styles.css">
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <title>LU Social Network-Let's Connect</title>
+</head>
+<body>
+    <!--@Header contains the Laikipia University title and logo
+        @Search bar 
+        @Navbar which contains the different pages that can be visited while in the site
+     -->
+    <header>
+        <!-- @The logo is an image file which contains both the Laikipia Badge as well as the Laikipia University Official title name -->
+        <div class="upper-header">
+            <!-- Logo Div -->
+            <div class="logo">
+                <!-- The image is enclosed with a link so that when clicked, it takes you to the Official site home page-->
+                <a href="https://www.laikipia.ac.ke/"><img src="./src/resources/logo.png" alt="Laikipia University" title="Laikipia University"></a>
+            </div>
+            <div class="search-div">
+                <form>
+                    <div class="input-div">
+                        <input type="text" placeholder="Search Here ..." class="search-area">
+                    </div>
+                    <div class="input-div">
+                        <button type="submit">Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- @Navbar -->
+        <div class="nav-div">
+            <nav>
+                <!-- The unordered list contains the navigational links for different pages -->
+                <ul>
+                    <li ><a href="https://www.laikipia.ac.ke/">Home</a></li>
+                    <li><a href="https://www.laikipia.ac.ke/About-LU">About LU <span class="nav-heart">&hearts;</span></a></li>
+                    <li><a href="https://www.laikipia.ac.ke/governance">Governance <span class="nav-heart">&hearts;</span></a></li>
+                    <li><a href="https://www.laikipia.ac.ke/Admissions">Admissions <span class="nav-heart">&hearts;</span></a></li>
+                    <li><a href="https://www.laikipia.ac.ke/Academics">Academics <span class="nav-heart">&hearts;</span></a></li>
+                    <li><a href="https://www.laikipia.ac.ke/Research">Reasearch <span class="nav-heart">&hearts;</span></a></li>
+                    <li><a href="https://www.laikipia.ac.ke/library">Library <span class="nav-heart">&hearts;</span></a></li>
+                    <li><a href="https://www.laikipia.ac.ke/students">Student Life <span class="nav-heart">&hearts;</span></a></li>
+                    <li><a href="https://www.laikipia.ac.ke/#">Media Center <span class="nav-heart">&hearts;</span></a></li>
+                    <li><a href="https://www.laikipia.ac.ke/contact-us">Contact Us <span class="nav-heart">&hearts;</span></a></li>
+                    <!-- This is the entry page for this Section -->
+                    <li class="active"><a href="index.html">Social Net</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <!-- @Main contains the login button for the users
+        @Most of the features communicating to server will be  implemented here
+     -->
+     <main>
+        <!-- Login Page -->
+        <div class="login-div" id="login-div">
+            <form id="login-form">
+                <div class="" id="status"></div>
+                <div class="input-div">
+                    <input type="text" placeholder="E-mail/Registration Number" class="login-username" id="login-username" required>
+                </div>
+                <div class="input-div">
+                    <input type="password" placeholder="Password" class="login-password" id="login-password" required>
+                </div>
+                <div class="input-div">
+                    <button type="submit" class="login-btn" id="login-btn">Login</button>
+                </div>
+                <div class="input-div">
+                    <a href="#" id="forgot-password-link">Forgot Password?</a>
+                </div>
+                <div class="input-div">
+                    <a href="#" id="change-password-link">Change Password?</a>
+                </div>
+            </form>
+        </div>
+        <section style="display: none;" id="main-section" >
+           <div class="static-div">
+            <div class="search-div">
+                <form>
+                    <div class="input-div">
+                        <input type="text" placeholder="Search Here ..." class="search-area" id="search-input">
+                    </div>
+                    <div class="input-div">
+                        <button type="submit">Search</button>
+                    </div>
+                </form>
+            </div>
+            <nav>
+                <!-- Breadcrumbs -->
+                <ul class="breadcrumb">
+                    <li><a href="#" id="to-resources-section">Resources</a></li>
+                    <li><a href="#" id="to-articles-section">Articles</a></li>
+                </ul>
+            </nav>
+
+            <!-- RESOURCES STATIC SECTION -->
+            <div id="resources-section" class="d-none">
+                <div class="left-resource-section">
+                    <h3>Choose A File to Share</h3>
+                    <!-- <progress></progress> -->
+                    <!-- <object data="./src//resources/254710288482_status_ab214c1685b64c48a39277525d4ecc53.mp4" type=""></object> -->
+                    <form id="resource-form">
+                        <div class="input-div">
+                            <input type="file" required style="cursor: pointer;" id="resource-file">
+                        </div>
+                        <div class="input-div">
+                            <button type="submit" id="resource-btn">Post</button>
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+            <!-- ARTICLES STATIC SECTION -->
+            <div id="articles-section">
+                <div class="left-article-section">
+                <p>Welcome to LU Social Network</p>
+                <h3>Post Article</h3>
+                <form id="article-form">
+                    <div class="article-status"></div>
+                    <div class="input-div">
+                        <input type="text" required placeholder="Article title" id="article-title">
+                    </div>
+                    <div class="input-div">
+                        <textarea id="article" required cols="30" rows="10" placeholder="Create Article"></textarea>
+                    </div>
+                    <div class="input-div">
+                        <button type="submit" id="btn-post">Post</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+        <div class="resources-div d-none" id="resources-div">
+        </div>
+        <div class="articles-div"  id="articles-div"></div>
+        <div class="article-item d-none" id="article-item">
+            <div class="comment-div display-flex">
+                <form class="comment-form" id="comment-form">
+                    <div class="input-div">
+                        <textarea id="comment-input" required placeholder="Type Comment here.." cols="30" rows="5"></textarea>
+                    </div>
+                    <div class="input-div">
+                        <button type="submit" id="btn-comment">Comment</button>
+                    </div>
+                </form>
+                <div class="comments" id="comments"></div>
+            </div>
+            </div>
+        </div>
+        </section>
+       <section id="forgot-section" class=" d-none">
+        <div id="change-password" class="change-password">
+            <div class="form-div">
+                <form class="display-flex" id="forgot-pass-form">
+                    <div class="input-div">
+                        <input type="email" id="email" required placeholder="Enter your registered Email">
+                    </div>
+                    <div class="input-div">
+                        <button type="submit">
+                            Send
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+       </section>
+       <section id="change-section" class="d-none">
+        <div id="change-password" class="change-password d-none" >
+               <div class="form-div">
+                   <form class="display-flex" id="change-pass-form">
+                    
+                    <div class="input-div">
+                        <input type="text" id="user-id" required  placeholder="Username(Email/Reg.No)">
+                    </div>
+                       <div class="input-div">
+                           <input type="password" id="current-password" required  placeholder="Current Password">
+                       </div>
+                       <div class="input-div">
+                           <input type="password" id="new-password" required placeholder="New Password">
+                       </div>
+                       <div class="input-div">
+                           <input type="password" id="confirm-password" required  placeholder="Confirm Password">
+                       </div>
+                       <div class="input-div">
+                           <button type="submit">
+                               Change
+                           </button>
+                       </div>
+                   </form>
+               </div>
+           </div>
+       </section>
+       <!-- <section>
+           <div class="lower-main">
+               <div class="lower-main-left">
+                   <h4>QUICK LINKS</h4>
+                   <ul>
+                       <li><a href="#">HELB Website</a></li>
+                       <li><a href="#">HELB Student Portal</a></li>
+                       <li><a href="#">KUCCPS</a></li>
+                       <li><a href="#">Ministry of Education</a></li>
+                       <li><a href="#">Laikipia County Government</a></li>
+                       <li><a href="#">FAQs</a></li>
+                       <li><a href="#">FAQs</a></li>
+                       <li><a href="#">Student Portal</a></li>
+                       <li><a href="#">Staff Mail</a></li>
+                       <li><a href="#">LU Staff Plagscan Anti-Plagarism</a></li>
+                       <li><a href="#">LU Student Plagscan Anti-Plagarism</a></li>
+                       <li><a href="#">Partners</a></li>
+                   </ul>
+               </div>
+               <div class="lower-main-center">
+                   <h4>LU INFO POINT</h4>
+                   <a href=""></a>
+                   <h4><a href="#">PREVIOUS EDITIONS</a></h4>
+               </div>
+               <div class="lower-main-right">
+                   <h4>CONTACTS</h4>
+                   
+               </div>
+           </div>
+       </section> -->
+     </main>
+     <!-- 
+         @Footer contains all the links that the parent site contains
+      -->
+     <!--  <footer>
+          <ul>
+              <li>Copyright &copy; 2020 Laikipia University. All rights reserved</li>
+              <li>Laikipia University is ISO 9001:2015 & ISO/IEC 27001:2013 Certified</li>
+          </ul>
+      </footer> -->
+    <div class="error-div" id="error-div" style="display: none;" >
+        <div class="error-status" id="error-status"></div>
+    </div>
+     <script src="./src/js/scripts.js">
+    </script>
+    </body>
+</html>

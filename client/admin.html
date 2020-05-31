@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./src/resources/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/styles.css">
+    <title>LU Social Network-Let's Connect | Admin</title>
+</head>
+<body>
+    <!--@Header contains the Laikipia University title and logo
+        @Search bar 
+        @Navbar which contains the different pages that can be visited while in the site
+     -->
+     <header>
+        <!-- @The logo is an image file which contains both the Laikipia Badge as well as the Laikipia University Official title name -->
+        <div class="upper-header">
+            <!-- Logo Div -->
+            <div class="logo">
+                <!-- The image is enclosed with a link so that when clicked, it takes you to the Official site home page-->
+                <a href="www.laikipia.ac.ke"><img src="./src/resources/logo.png" alt="Laikipia University" title="Laikipia University"></a>
+            </div>
+            <div class="search-div">
+                <form>
+                    <div class="input-div">
+                        <input type="text" placeholder="Search Here ..." class="search-area" id="search-input">
+                    </div>
+                    <div class="input-div">
+                        <button type="submit">Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- @Navbar -->
+        <div class="nav-div">
+            <nav>
+                <!-- The unordered list contains the navigational links for different pages -->
+                <ul>
+                    <li ><a href="https://www.laikipia.ac.ke/">Home</a></li>
+                    <li><a href="https://www.laikipia.ac.ke/About-LU">About LU <span class="nav-heart">&hearts;</span></a></li>
+                    <li><a href="https://www.laikipia.ac.ke/governance">Governance <span class="nav-heart">&hearts;</span></a></li>
+                    <li><a href="https://www.laikipia.ac.ke/Admissions">Admissions <span class="nav-heart">&hearts;</span></a></li>
+                    <li><a href="https://www.laikipia.ac.ke/Academics">Academics <span class="nav-heart">&hearts;</span></a></li>
+                    <li><a href="https://www.laikipia.ac.ke/Research">Reasearch <span class="nav-heart">&hearts;</span></a></li>
+                    <li><a href="https://www.laikipia.ac.ke/library">Library <span class="nav-heart">&hearts;</span></a></li>
+                    <li><a href="https://www.laikipia.ac.ke/students">Student Life <span class="nav-heart">&hearts;</span></a></li>
+                    <li><a href="https://www.laikipia.ac.ke/#">Media Center <span class="nav-heart">&hearts;</span></a></li>
+                    <li><a href="https://www.laikipia.ac.ke/contact-us">Contact Us <span class="nav-heart">&hearts;</span></a></li>
+                    <!-- This is the entry page for this Section -->
+                    <li class="active"><a href="index.html">Social Net</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <section id="admin-section" class="d-noned">
+            <div id="reset-password" class="change-password">
+                <div class="form-div">
+                    <form class="display-flex" id="admin-form">
+                        <div class="input-div">
+                            <input type="text" id="admin" required  placeholder="Admin">
+                        </div>
+                        <div class="input-div">
+                            <input type="password" id="admin-password" required  placeholder="Enter Password">
+                        </div>
+                        <div class="input-div">
+                            <button type="submit">
+                                Sign In
+                            </button>
+                        </div>
+                    </form>
+                </div>
+    
+            </div>
+           </section>
+           <section class="create-user d-none" id="create-user-section">
+            <div id="reset-password" class="change-password">
+                <div class="user-form-div">
+                    <form class="user-form" id="user-form" >
+                        <div class="input-div">
+                            <input type="text" id="fname" required  placeholder="First Name">
+                        </div>
+                        <div class="input-div">
+                            <input type="text" id="lname" required  placeholder="Last Name">
+                        </div>
+                        <div class="input-div">
+                            <input type="email" id="email" required  placeholder="E-mail Address">
+                        </div>
+                        <div class="input-div">
+                            <input type="text" id="reg-no" required  placeholder="Reg. Number">
+                        </div>
+                        <div class="input-div">
+                            <input type="text" id="course" required  placeholder="Bachelors Degree">
+                        </div>
+                        <div class="input-div">
+                            <input type="password" id="user-password" required  placeholder="Password">
+                        </div>
+                        <div class="input-div">
+                            <input type="password" id="confirm-password" required  placeholder="Confirm Password">
+                        </div>
+                        <div class="gender" id="gender">
+                            <input type="radio" class="radio" id="male" name="gender"  value="male" checked>Male
+                            <input type="radio" class="radio" id="female" name="gender"  value="female">Female
+                        </div>
+                        <div class="input-div">
+                            <button type="submit">
+                                Register
+                            </button>
+                        </div>
+                    </form>
+                </div>
+    
+            </div>
+           </section>
+    </main>
+    <script src="./src/js/pass.js">
+    </script>
+</body>
+</html>

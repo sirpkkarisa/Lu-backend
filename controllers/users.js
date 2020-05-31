@@ -218,7 +218,7 @@ exports.changePassword = (req, res) => {
       text: 'You are receiving this email because either you( or someone else) have requested to change password\n'
           + 'If you did not request, please ignore and your password for LU Social Net will remain unchaged\n'
           + 'Click the link below to reset password\n\n'
-          + `http://localhost:5000/${resetPasswordToken}.`,
+          + `${req.protocol}://${req.get('host')}/${resetPasswordToken}.`,
     };
     pool.query(`SELECT * FROM lu_users WHERE email='${email}'`)
       .then(

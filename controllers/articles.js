@@ -156,7 +156,7 @@ exports.getArticle = (req, res) => {
 exports.updateArticle = (req, res) => {
   const { articleId } = req.params;
   const { articleTitle, article, authorId} = req.body;
-  console.log('hhw')
+  console.log(req.body)
   if (articleTitle === undefined || article === undefined || authorId === undefined) {
     return res.status(400)
             .json({

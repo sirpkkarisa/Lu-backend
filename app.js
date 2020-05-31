@@ -21,6 +21,7 @@ app.use((req, res, next) => {
 
 
 app.use(bodyParser.json());
+app.use('/',express.static(path.join(__dirname,'./client')));
 app.use('/uploaded_docs',express.static(path.join(__dirname, 'uploaded_documents')))
 app.use('/auth', usersRoutes);
 app.use('/articles', articlesRoutes);
