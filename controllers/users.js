@@ -135,6 +135,7 @@ exports.changePassword = (req, res) => {
     // This can either be email or registeration number
     const { uid, currentPassword, newPassword } = req.body;
 
+    console.log(currentPassword)
     if (uid === undefined || currentPassword === undefined || newPassword === undefined) {
       return res.status(400)
         .json({
@@ -213,15 +214,7 @@ exports.changePassword = (req, res) => {
     const resetPasswordToken = crypto.randomBytes(20).toString('hex');
     const { email } = req.body;
 
-    const mailOptions = {
-      from: `${process.env.NODEMAILER_USER}`,
-      to: `${email}`,
-      subject: 'Link To Reset Password',
-      text: 'You are receiving this email because either you( or someone else) have requested to change password\n'
-          + 'If you did not request, please ignore and your password for LU Social Net will remain unchaged\n'
-          + 'Click the link below to reset password\n\n'
-          + `${req.protocol}://${req.get('host')}/${resetPasswordToken}.`,
-    };
+  
     pool.query(`SELECT * FROM lu_users WHERE email='${email}'`)
       .then(
         ({ rows }) => {
@@ -232,6 +225,37 @@ exports.changePassword = (req, res) => {
                 error: 'Unauthorized',
               });
                }
+        const user_fname = rows.map((data) => data.first_name).toString();
+        const mailOptions = {
+            from: `GROUP PROJECT`,
+            to: `${email}`,
+            subject: 'Link To Change Password',
+            html:`<body style='width:100%;height:70vh;font-family:Arial,Helvetica;background-color:#eee;'>
+  
+                  <div style='font-size:16px; width:90%;background-color:#ccc;padding:1rem;'>
+                  <h2>LU Social Net</h2>
+                  <br>
+                    <p>Dear ${user_fname},<p>
+                    <p>To reset your password, kindly click on the Change Password button below.</p>
+                   <p style='display:flex;justify-content:center;align-items:center;'> <a  style='background-color:#eee;color:#fff;text-decoration:none;' href='${req.protocol}://${req.get('host')}/reset-password.html?=${resetPasswordToken}'>
+                      <button style='border-radius:5px;font-size:20px; width:100%;cursor:pointer;'>Change Password</button>
+                    </a>
+                    </p>
+                    <p>
+                      If you cant click the link above, copy and paste the link below on your browser to reset your password
+                    </p>
+                    <a href='${req.protocol}://${req.get('host')}/reset-password.html?reset-password-token=${resetPasswordToken}'>${req.protocol}://${req.get('host')}/reset-password.html?=${resetPasswordToken}</a>
+                    <div>
+                    <p style='text-align:center;font-size: 10px;'>
+                      You are receiving this email because either you( or someone else) have requested to change password.If you did not request, please ignore and your password for LU Social Net will remain unchaged
+                    </p>
+                  </div>
+                  <div>
+                    <img src='https://pkk-2019.herokuapp.com/static/media/logo.6b5c63a7.png' width='100' height='100'/>
+                  </div>
+                </body>
+            `
+          };
           return pool.query(`UPDATE lu_users SET reset_password_token='${resetPasswordToken}' WHERE email='${email}'`)
             .then(
               () => {

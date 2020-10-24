@@ -322,7 +322,104 @@ small {
   background-color: #fff;
   color: #000;
 }
+#chats-section {
+  position: relative;
+  top: 0;
+  left: 5vw;
+  width: 90vw;
+  height: 66vh;
+  background-color: #ccc;
+}
+#chats-section form  {
+   display: flex;
+   flex-direction: column;
+   width: 40%;
+   margin: auto;
+   background-color: dodgerblue;
+   padding: 15px;
+}
+#chats-section input {
+    height: 25px;
+    padding: 5px;
+    border: none;
+}
+#chats-section button {
+    width: 50%;
+    margin: auto;
+    padding: 5px;
+    border: white 1px solid;
+    background-color: dodgerblue;
+    color: #fff;
+}
+#chats-section button:hover {
+    transition: all 0.5s ease-in;
+    cursor: pointer;
+    background-color: darkturquoise;
+    color: #000;
+}
 
+.chat-container .status {
+    margin: auto;
+}
+#chats-section .status {
+    text-align: center;
+    color:#333;
+    padding: 1px;
+    background: #ddf;
+    width: 100px;
+    border-radius: 5px;
+}
+#chats-section .chats {
+    height: 200px;
+    width: 40%;
+    background: white;
+    margin: auto;
+    overflow-y: scroll;    
+}
+#chats-section .inputDiv {
+   display: flex;
+   flex-direction: column;
+   width: 40%;
+   margin: auto;
+   
+   padding: 15px;
+}
+.chat-container textarea {
+    margin-top: -15px;
+    height: 50px;
+    max-width: 514px;
+    border: none;
+    background-color: rgb(207, 238, 235);
+}
+
+.conversation {
+    background-color: dodgerblue;
+    padding: 5px;
+    border-radius: 12px;
+    margin: 5px;
+    width: 30%;
+    overflow-x: inherit;
+    min-height: 30px;
+    border-top-left-radius: 3px;
+}
+.author {
+    background-color: #ccc;
+    padding: 5px;
+    margin-left: 65%;
+    border-radius: 12px;
+    /* margin-top: 5px; */
+    width: 30%;
+    min-height: 30px;
+    overflow-x: inherit;
+    border-top-right-radius: 3px;
+}
+.authorLeft {
+    /* padding: 5px; */
+    margin-left: 65%;
+    /* bottom: -9px; */
+    /* width: 30%; */
+    overflow-x: inherit;
+}
 
 /* CREATE USER FORM */
 div.main {

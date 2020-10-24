@@ -10,6 +10,28 @@ server.listen(
     }
 )
 
-//io.on('connect', (socket) => {
-  //      console.log('ok');
- //})
+io.on('connect', (socket) => {
+       console.log('user connected!');
+
+    //status
+    sendStatus = (s) => {
+        return socket.emit('status', {msg: s});
+    };
+    
+    socket.on('loggedIn', (data)=> {
+        //welcome
+        socket.emit('welcome', {msg: `Welcome ${data.usernameValue}`, user: data.usernameValue})
+    });
+    
+    socket.on('chat', (data) => {
+        io.emit('conversation', {
+            id: socket.id, 
+            conversation: data.conversation,
+            author: data.usernameValue
+        });
+    });
+
+    socket.on('disconnect',() => {
+        console.log('socket disconnected')
+    });
+ })

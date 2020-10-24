@@ -5,7 +5,8 @@
     const adminForm = getElemById('admin-form');
 
     
-  return  adminForm.addEventListener('submit', (e) => {
+  if (adminForm) {
+    return  adminForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const admin = getElemById('admin').value.trim();
         const password = getElemById('admin-password').value.trim();
@@ -33,11 +34,16 @@
         })
         .catch((err) => console.log(err))
     });
+  }
     let gender ='male';
-    getElemById('gender').addEventListener('change',(e)=> {
+    if (getElemById('gender')) {
+         getElemById('gender').addEventListener('change',(e)=> {
         gender = e.target.value;
     })
-    return getElemById('user-form').addEventListener('submit', (e) => {
+    }
+   
+   if (getElemById('user-form')) {
+     return getElemById('user-form').addEventListener('submit', (e) => {
         e.preventDefault();
         const firstName = getElemById('fname').value.trim();
         const lastName = getElemById('lname').value.trim();
@@ -46,19 +52,19 @@
         const degreeCourse = getElemById('course').value.trim();
         const userPassword = getElemById('user-password').value.trim();
         const confirmPassword = getElemById('confirm-password').value.trim();
- 	
- 	if (firstName.length <1 || lastName.length < 1|| email.length <1 || regNo.length <1 || degreeCourse.length <1 || userPassword.length <1){
- 		console.log('All fields are required');
- 		return 'All fields are required';
- 	}
- 	if (userPassword.length < 6) {
- 		console.log('Password is too short');
- 		return 'Password is too short';
- 	}
- 	if (userPassword !== confirmPassword) {
- 		console.log('Password mismatch');
- 		return 'Password mismatch';
- 	}
+    
+    if (firstName.length <1 || lastName.length < 1|| email.length <1 || regNo.length <1 || degreeCourse.length <1 || userPassword.length <1){
+        console.log('All fields are required');
+        return 'All fields are required';
+    }
+    if (userPassword.length < 6) {
+        console.log('Password is too short');
+        return 'Password is too short';
+    }
+    if (userPassword !== confirmPassword) {
+        console.log('Password mismatch');
+        return 'Password mismatch';
+    }
         fetch('http://localhost:5000/auth/isAdmin', {
             method: 'POST',
             headers: new Headers({
@@ -85,6 +91,7 @@
         .catch((err) => console.log(err))
         
     })
+   }
    return resetPassForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const newPassword = getElemById('new-password').value.trim();

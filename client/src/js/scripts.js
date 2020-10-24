@@ -49,6 +49,7 @@ if (localStorage.getItem('token')) {
         getElemById('resources-section').classList.add('d-none');
         getElemById('resources-div').classList.add('d-none');
         getElemById('article-item').classList.add('d-none');
+        getElemById('chats-section').classList.add('d-none');
     });
       getElemById('to-resources-section').addEventListener('click',(e)=> {
         e.preventDefault();
@@ -57,8 +58,18 @@ if (localStorage.getItem('token')) {
         getElemById('articles-section').classList.add('d-none');
         getElemById('articles-div').classList.add('d-none');
         getElemById('article-item').classList.add('d-none');
+        getElemById('chats-section').classList.add('d-none');
         getDocuments();
     });
+      getElemById('to-chats-section').addEventListener('click',(e)=> {
+        e.preventDefault();
+        getElemById('chats-section').classList.remove('d-none');
+        getElemById('articles-section').classList.add('d-none');
+        getElemById('articles-div').classList.add('d-none');
+        getElemById('resources-section').classList.add('d-none');
+        getElemById('resources-div').classList.add('d-none');
+        getElemById('article-item').classList.add('d-none');
+      })
       getElemById('forgot-password-link').addEventListener('click',(e) => {
        e.preventDefault();
         getElemById('login-div').classList.add('d-none');
@@ -343,7 +354,7 @@ if (localStorage.getItem('token')) {
                 }
             }
             if (method == 'POST' || method == 'PATCH' || method == 'DELETE') {
-            console.log(data)
+
                 if (data !== undefined) {
                     if (method == 'PATCH' && data.END_POINT.includes('auth')) {
                         xhr.setRequestHeader('Content-Type', 'application/json');
