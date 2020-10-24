@@ -7,6 +7,8 @@ body {
   box-sizing: border-box;
   font-family: Arial, Helvetica, sans-serif;
   color: #444;
+  height: 100vh;
+  width: 100vw;
 }
 /* Header */
 @media(min-width: 621px){
@@ -30,7 +32,8 @@ header .upper-header form {
   display: inline-flex;
 }
 form .input-div {
-  height: 1.8rem;
+  /*! height: 2.rem; */
+  margin: 0.5rem;
 }
 header input {
   background-color: #eee;
@@ -51,6 +54,7 @@ input, button{
   border: none;
   padding: 3px;
   padding-left: 7px;
+  /*! font-size: 1.1rem; */
 }
 /* @Navbar */
 .nav-div nav {
@@ -144,7 +148,7 @@ main .login-btn {
 
 .static-div {
   position: fixed;
-  margin-top: 17rem;
+  top: 32vh;
   margin-left: 1rem;
   height: 70vh;
   float: left;
@@ -188,9 +192,10 @@ section .breadcrumb {
   display: flex;
   flex-direction: column;
   margin-top: -2rem;
+  height: 50rem;
 }
 .left-article-section input {
-  width: 100%;
+  width: 300px;
 }
 .left-article-section textarea {
   border: none;
@@ -199,9 +204,7 @@ section .breadcrumb {
   padding: 7px;
   width: 100%;
 }
-.left-article-section button {
- margin-top: 10.5rem;
-}
+
 /* right section */
 .articles-div{
   float: right;
@@ -246,6 +249,7 @@ small {
 .the-article {
   width: 45%;
 }
+
 .article-item form {
   margin-top: 10rem;
   margin-bottom: -5rem;
@@ -291,10 +295,7 @@ small {
   }
 .forgot-password, .change-password {
   position: absolute;
-  margin-top: 20rem;/*
-  background-color: #555;*/
-  opacity: 0.5;
-  /*height: 62vh;*/
+  margin-top: 20rem;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -324,19 +325,53 @@ small {
 
 
 /* CREATE USER FORM */
- .user-form-div {
-  background-color: #fff;
-  width: 30%;
-  box-shadow: #000 0px 10px 15px 10px;
- }
- .gender {
-  display: flex; 
-  align-items: center; 
- }
-.radio {
-  height: 2rem;
+div.main {
+  position: relative;
+  top: 34vh;
+  height: 66vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
+#admin-form {
+  background-color: #fff;
+  width: 50%;
+  height:40%;
+  box-shadow: #ccc 0px 10px 15px 10px;
+  padding: 1rem;
+}
+#create-user-section,#admin-section {
+  width:100%;
+  height:100%;
+  /*! background:red; */
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+ #user-form{
+  background-color: #fff;
+  width: 50%;
+  height:70%;
+  box-shadow: #ccc 0px 10px 15px 10px;
+  padding: 1rem;
+ }
+#user-form input,#admin-form input  {
+ border-bottom: 1px #ccc solid;
+}
+#user-form button,#admin-form button {
+  font-size: 1.5rem;
+  background-color:#ccc;
+  color: #fff;
+  border:1px solid #aaa;
+  border-radius: 1rem;
+  padding: 0.5rem;
+}
+#user-form button:hover,#admin-form button:hover {
+  background-color:#fff;
+  color: #555;
+  border:1px solid #aaa;
+  padding: 0.5rem;
+}
 .error-div {
   height: 100vh;
   width: 100%;

@@ -123,8 +123,8 @@ if (localStorage.getItem('token')) {
                 (error) => console.log(error)
             )
         })
-        getElemById('delete-comment').addEventListener('click', () => {
-            console.log('delete comment')
+        //getElemById('delete-comment').addEventListener('click', () => {
+        //    console.log('delete comment')
             // fetch(`http://localhost:5000/articles/${articleId}/comments/`, {
             //         method: 'PATCH',
             //         headers: new Headers({
@@ -144,7 +144,7 @@ if (localStorage.getItem('token')) {
             //         }
             //     })
             //     .catch(e => console.log(e));
-        })
+        //})
         getElemById('btn-post').setAttribute('disabled',true)
         getElemById('edit-btn').addEventListener('click', () => {
             getElemById('article-title').value = localStorage.getItem('articleTitle');
@@ -276,7 +276,7 @@ if (localStorage.getItem('token')) {
             getData({ uid, currentPassword, newPassword, END_POINT: 'auth/change-password'});
          })
      });
-    const url = `${location.protocol}://${location.host}/`;
+    const url = `${location.protocol}//${location.host}/`;
     let END_POINT = 'auth/signin';
     
     let id =''
@@ -330,7 +330,8 @@ if (localStorage.getItem('token')) {
             if (END_POINT.split('/').length > 2) {
                 END_POINT = `${END_POINT.split('/')[0]}/${END_POINT.split('/')[2]}`;
             }
-            // console.log(method)
+           // console.log(url)
+		//REGEX for url = /^https?\:{1}\/{2}\w*|(\d{1,3}){3}\:\w*\/?/
             xhr.open(method,`${url}${END_POINT}`);
             xhr.onreadystatechange =() => {
                 if(xhr.readyState === 4) {
@@ -342,6 +343,7 @@ if (localStorage.getItem('token')) {
                 }
             }
             if (method == 'POST' || method == 'PATCH' || method == 'DELETE') {
+            console.log(data)
                 if (data !== undefined) {
                     if (method == 'PATCH' && data.END_POINT.includes('auth')) {
                         xhr.setRequestHeader('Content-Type', 'application/json');
@@ -355,11 +357,14 @@ if (localStorage.getItem('token')) {
                     }
                     xhr.setRequestHeader('Content-Type', 'application/json');
                     xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem('token')}`);
-                //   console.log(data)
+                    //xhr.send(JSON.stringify(data));
+                  //console.log(Object.entries(data).length === 1)
                 if (Object.entries(data).length === 1) {
                     return;
-                }
+                }	
+                  
                     xhr.send(JSON.stringify(data));
+                    console.log('sent')
                     
                 }else {
                     reject('Cannot Send empty data')
@@ -395,6 +400,7 @@ if (localStorage.getItem('token')) {
             let state =[];
             let docOutput ='';
             let idArr = [];
+            console.log(res)
             if (res.data[0].doc_id !== undefined) {
                 res.data.forEach((item) => {
                     if (item.doc_url === undefined) {

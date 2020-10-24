@@ -156,7 +156,7 @@ exports.getArticle = (req, res) => {
 exports.updateArticle = (req, res) => {
   const { articleId } = req.params;
   const { articleTitle, article, authorId} = req.body;
-  console.log(req.body)
+
   if (articleTitle === undefined || article === undefined || authorId === undefined) {
     return res.status(400)
             .json({
@@ -210,6 +210,7 @@ exports.updateArticle = (req, res) => {
 exports.deleteArticle = (req, res) => {
   const { articleId } = req.params;
   const { authorId } = req.body;
+  
   pool.query(`SELECT * FROM lu_articles WHERE article_id='${articleId}' AND author_id='${authorId}'`)
     .then(
       ({ rows }) => {
@@ -223,9 +224,9 @@ exports.deleteArticle = (req, res) => {
         pool.query(`SELECT * FROM lu_comments WHERE article_id='${articleId}' AND author_id='${authorId}'`)
             .then(
               (rs) => {
-                if (rs.rowCount === 0) {
-                  return;
-                }
+               // if (rs.rowCount === 0) {
+                //  return;
+                //}
               return pool.query(`DELETE FROM lu_articles WHERE article_id='${articleId}' AND author_id='${authorId}'`)
                         .then(
                           () => {

@@ -10,6 +10,6 @@ server.listen(
     }
 )
 
-io.on('connect', (socket) => {
-        console.log('ok');
- })
+//io.on('connect', (socket) => {
+  //      console.log('ok');
+ //})

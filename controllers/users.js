@@ -6,8 +6,9 @@ const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 
 const transporter = nodemailer.createTransport({
-    // host: 'gsmtp.gmail.com',
-    service:'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, 
     auth: {
        user: process.env.NODEMAILER_USER,
        pass: process.env.NODEMAILER_PASSWORD
@@ -211,6 +212,7 @@ exports.changePassword = (req, res) => {
   exports.forgotPassword = (req, res) => {
     const resetPasswordToken = crypto.randomBytes(20).toString('hex');
     const { email } = req.body;
+
     const mailOptions = {
       from: `${process.env.NODEMAILER_USER}`,
       to: `${email}`,

@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="css/styles.css">
     <title>LU Social Network-Let's Connect | Admin</title>
 </head>
-<body>
+<body class="body">
     <!--@Header contains the Laikipia University title and logo
         @Search bar 
         @Navbar which contains the different pages that can be visited while in the site
@@ -52,10 +52,8 @@
             </nav>
         </div>
     </header>
-    <main>
-        <section id="admin-section" class="d-noned">
-            <div id="reset-password" class="change-password">
-                <div class="form-div">
+    <div class="main">
+        <div id="admin-section">
                     <form class="display-flex" id="admin-form">
                         <div class="input-div">
                             <input type="text" id="admin" required  placeholder="Admin">
@@ -69,13 +67,8 @@
                             </button>
                         </div>
                     </form>
-                </div>
-    
-            </div>
-           </section>
-           <section class="create-user d-none" id="create-user-section">
-            <div id="reset-password" class="change-password">
-                <div class="user-form-div">
+           </div>
+           <div  id="create-user-section" style="display:none;">
                     <form class="user-form" id="user-form" >
                         <div class="input-div">
                             <input type="text" id="fname" required  placeholder="First Name">
@@ -108,11 +101,8 @@
                             </button>
                         </div>
                     </form>
-                </div>
-    
-            </div>
-           </section>
-    </main>
+           </div>
+    </div>
     <script src="./src/js/pass.js">
     </script>
 </body>

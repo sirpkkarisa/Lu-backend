@@ -5,11 +5,11 @@
     const adminForm = getElemById('admin-form');
 
     
-    adminForm.addEventListener('submit', (e) => {
+  return  adminForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const admin = getElemById('admin').value.trim();
         const password = getElemById('admin-password').value.trim();
-        console.log(admin)
+
         fetch('http://localhost:5000/auth/create-user', {
             method: 'POST',
             headers: new Headers({
@@ -23,10 +23,10 @@
         .then((res) => res.json())
         .then((res)=> {
             if (res.status === 'success' && res.message === 'isAdmin') {
-                localStorage.setItem('admin',admin);
-                localStorage.setItem('password',password);
-                getElemById('admin-section').classList.add('d-none');
-                getElemById('create-user-section').classList.remove('d-none');
+                sessionStorage.setItem('admin',admin);
+                sessionStorage.setItem('password',password);
+                getElemById('admin-section').style.display = 'none';
+                getElemById('create-user-section').removeAttribute('style');
                 return;
             }
             alert('Invalid Login');
@@ -37,7 +37,7 @@
     getElemById('gender').addEventListener('change',(e)=> {
         gender = e.target.value;
     })
-    getElemById('user-form').addEventListener('submit', (e) => {
+    return getElemById('user-form').addEventListener('submit', (e) => {
         e.preventDefault();
         const firstName = getElemById('fname').value.trim();
         const lastName = getElemById('lname').value.trim();
@@ -46,14 +46,26 @@
         const degreeCourse = getElemById('course').value.trim();
         const userPassword = getElemById('user-password').value.trim();
         const confirmPassword = getElemById('confirm-password').value.trim();
-        console.log(localStorage.getItem('admin'))
+ 	
+ 	if (firstName.length <1 || lastName.length < 1|| email.length <1 || regNo.length <1 || degreeCourse.length <1 || userPassword.length <1){
+ 		console.log('All fields are required');
+ 		return 'All fields are required';
+ 	}
+ 	if (userPassword.length < 6) {
+ 		console.log('Password is too short');
+ 		return 'Password is too short';
+ 	}
+ 	if (userPassword !== confirmPassword) {
+ 		console.log('Password mismatch');
+ 		return 'Password mismatch';
+ 	}
         fetch('http://localhost:5000/auth/isAdmin', {
             method: 'POST',
             headers: new Headers({
                 'Content-Type': 'application/json',
                 'Authorization':`Basic ${ btoa(JSON.stringify({
-                    name: localStorage.getItem('admin'),
-                    password: localStorage.getItem('password') 
+                    name: sessionStorage.getItem('admin'),
+                    password: sessionStorage.getItem('password') 
                 }))}`
             }),
             body: JSON.stringify({
@@ -73,7 +85,7 @@
         .catch((err) => console.log(err))
         
     })
-    resetPassForm.addEventListener('submit', (e) => {
+   return resetPassForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const newPassword = getElemById('new-password').value.trim();
          const confirmPassword = getElemById('confirm-password').value.trim();
