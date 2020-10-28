@@ -214,7 +214,12 @@ exports.changePassword = (req, res) => {
     const resetPasswordToken = crypto.randomBytes(20).toString('hex');
     const { email } = req.body;
 
-  
+  if (email === undefined) {
+    return res.status(401).json({
+      status:'error',
+      error:'Unauthorized'
+    })
+  }
     pool.query(`SELECT * FROM lu_users WHERE email='${email}'`)
       .then(
         ({ rows }) => {
@@ -304,12 +309,19 @@ exports.changePassword = (req, res) => {
   exports.resetPassword = (req, res) => {
     const { password } = req.body;
     const { resetPasswordToken } = req.body;
-  
+
+    if (password === undefined || resetPasswordToken === undefined) {
+      return res.status(401)
+                  .json({
+                    status:'error',
+                    error:'Unauthorized'
+                  })
+    }
     pool.query(`SELECT * FROM lu_users WHERE reset_password_token='${resetPasswordToken}'`)
       .then(
         ({ rows }) => {
-          if (!rows) {
-            return res.status
+          if (rows.length === 0) {
+            return res.status(403)
               .json({
                 status: 'error',
                 error: 'Forbidden',

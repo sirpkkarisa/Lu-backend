@@ -672,12 +672,12 @@ div.main {
     display: flex;
     flex-direction: column;
   }
-  .gender {
+ /* .gender {
     margin-top: 2rem; 
   }
   .radio {
     color: red;
-  }
+  }*/
   .comment-div article {
     float: left;
     border-radius: 1rem;

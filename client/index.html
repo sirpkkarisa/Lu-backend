@@ -50,6 +50,7 @@
                     <li><a href="https://www.laikipia.ac.ke/contact-us">Contact Us <span class="nav-heart">&hearts;</span></a></li>
                     <!-- This is the entry page for this Section -->
                     <li class="active"><a href="index.html">Social Net</a></li>
+                    <li class="active"><a href="index.html" onclick="localStorage.clear()">Log Out</a></li>
                 </ul>
             </nav>
         </div>
@@ -139,11 +140,11 @@
             <!-- CHATS SECTION -->
             <div id="chats-section">
                 <div class="chat-container">
-                    <div id="status" class="status"></div>
+                    <div id="chat-status" class="status"></div>
                     <div id="chats" class="chats">
                     </div>
                        <div class="inputDiv">
-                        <textarea type="text" placeholder="Type message..." class="input" id="input"></textarea>
+                        <textarea type="text" placeholder="Type message..." class="input" id="chat-input"></textarea>
                        </div>
                 </div>
             </div>

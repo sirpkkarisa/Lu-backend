@@ -2,6 +2,24 @@
     //DOM Elements and their EVENTS
     const getElemById = (id) => (document.getElementById(id));
     const createElem = (elem) => document.createElement(elem);
+    const formatDate = (dt) => {
+            if (!dt) {
+                return '--';
+            }
+            let date = new Date(dt).getUTCDate();
+            let hours = new Date(dt).getHours();
+            let minutes = new Date(dt).getMinutes();
+            let month = new Date(dt).getUTCMonth()+1;
+            let year = new Date(dt).getUTCFullYear();
+
+            if (date === new Date().getUTCDate()) {
+                return `Today, ${hours <= 9 ? '0'+hours: (hours % 10 === 0 ? hours+'0': hours)}:${minutes <= 9? '0'+minutes: minutes}`;
+            }
+            if ( (new Date().getUTCDate() - date) === 1) {
+                return `Yesterday, ${hours <= 9 ? '0'+hours: hours}:${minutes <= 9? '0'+minutes: minutes}`;
+            }
+            return `${year}-${month <= 9?'0'+month: month}-${date < 10 ? '0'+date: date},${hours}:${minutes}`;
+        }
     const init = async () => {
         try {
         await getData({method: 'GET'});
@@ -69,6 +87,72 @@ if (localStorage.getItem('token')) {
         getElemById('resources-section').classList.add('d-none');
         getElemById('resources-div').classList.add('d-none');
         getElemById('article-item').classList.add('d-none');
+        const socket = io.connect(url);
+        const chatsDiv = getElemById('chats');
+        const div = createElem('div');
+
+
+        socket.emit('loggedIn',{userId: localStorage.getItem('userId')});
+        socket.on('welcome', data=>{
+            getElemById('chat-status').innerHTML=`${data.msg}`;
+            setTimeout(() => {
+            getElemById('chat-status').style.display = 'none';
+        }, 2000);
+        });
+        getElemById('chat-input').addEventListener('keypress',(e)=>{
+
+               if (e.target.value.trim() && e.keyCode ===13){
+                    socket.emit('send-chat',{chat: e.target.value, authorId: localStorage.getItem('userId')});
+                    return;
+                }
+            });
+        
+        // socket.on('chat',data=>{
+
+        //     const date = createElem('small');
+        //     date.style.fontSize='7px';
+
+        //  if (localStorage.getItem('userId') && localStorage.getItem('userId') === data.id) {
+        //     div.setAttribute('class', 'author');
+        //     date.textContent = getTime(Date());
+        //     date.setAttribute('class', 'authorLeft');
+        //     div.textContent = data.chat;
+        //     chatsDiv.appendChild(div);
+        //     chatsDiv.appendChild(date);
+        //     return;
+        // }
+        //     date.textContent = getTime(Date());
+        //     div.setAttribute('class', 'conversation');
+        //     div.textContent = data.chat;
+        //     div.addEventListener('mouseover',(e) => {
+        //         e.target.setAttribute('title','Author: Pascal')
+        //     })
+        //     chatsDiv.appendChild(div); 
+        //     chatsDiv.appendChild(date);    
+        // });
+       
+        socket.on('chats',({chats})=> {
+            let conversation = '';
+
+           chats.forEach((res,i)=> {
+                if (localStorage.getItem('userId') && localStorage.getItem('userId') === res.author_id) {
+                    conversation += `<div class='author' title='Author: ${i}'>${res.chat}</div>
+                                    <small style='font-size: 7px' class='authorLeft'>${formatDate(res.created_on)}</small>
+                    `;
+                } else{
+                    conversation += `<div class='conversation' title='Author: ${i}'>${res.chat}</div>
+                                    <small style='font-size: 7px'>${formatDate(res.created_on)}</small>
+                    `         
+                }
+            })
+           chatsDiv.innerHTML = conversation;
+        })
+     socket.on('status',(data)=>{
+            if (data.msg=='clear') {
+                getElemById('chat-input').value = '';
+                return;
+            }
+        })
       })
       getElemById('forgot-password-link').addEventListener('click',(e) => {
        e.preventDefault();
@@ -134,28 +218,7 @@ if (localStorage.getItem('token')) {
                 (error) => console.log(error)
             )
         })
-        //getElemById('delete-comment').addEventListener('click', () => {
-        //    console.log('delete comment')
-            // fetch(`http://localhost:5000/articles/${articleId}/comments/`, {
-            //         method: 'PATCH',
-            //         headers: new Headers({
-            //             'Authorization': `Bearer ${localStorage.getItem('token')}`,
-            //             'Content-Type': 'application/json'
-            //         }),
-            //         body: JSON.stringify({
-            //             authorId,
-            //             articleTitle,
-            //             article,
-            //         })
-            //     }).
-            //     then(res => res.json())
-            //     .then(res => {
-            //         if (res.status === 'success') {
-            //             return location.reload();
-            //         }
-            //     })
-            //     .catch(e => console.log(e));
-        //})
+
         getElemById('btn-post').setAttribute('disabled',true)
         getElemById('edit-btn').addEventListener('click', () => {
             getElemById('article-title').value = localStorage.getItem('articleTitle');
@@ -393,12 +456,11 @@ if (localStorage.getItem('token')) {
         getElemById('login-div').style.display ='none';
         getElemById('main-section').removeAttribute('style');
         END_POINT = 'articles';
-    const socket = io.connect(url);
-
     }else {
         getElemById('main-section').style.display ='none';
         getElemById('main-section').setAttribute('hidden',true);
     }
+
     const getData = async (data)=> {
         try {
             const res = await makeGetRequest(data);
@@ -408,10 +470,14 @@ if (localStorage.getItem('token')) {
                 document.location.reload()
                 return;
             }
+       
             let state =[];
             let docOutput ='';
             let idArr = [];
-            console.log(res)
+            
+            if (res.data && res.data.resetPasswordToken && res.data.message && res.data.message == 'Recovery Link Sent') {
+                alert('Secure Link has been sent into your email')
+            }
             if (res.data[0].doc_id !== undefined) {
                 res.data.forEach((item) => {
                     if (item.doc_url === undefined) {

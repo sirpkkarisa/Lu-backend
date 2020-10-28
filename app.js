@@ -8,6 +8,7 @@ require('./models/users').userTable();
 require('./models/articles').articlesTable();
 require('./models/documents').documentsTable();
 require('./models/comments').commentsTable();
+require('./models/chats').chatsTable();
 
 const usersRoutes = require('./routes/users');
 const articlesRoutes = require('./routes/articles');
