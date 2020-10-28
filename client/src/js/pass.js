@@ -12,7 +12,7 @@ const getElemById = (id) => document.getElementById(id);
         const admin = getElemById('admin').value.trim();
         const password = getElemById('admin-password').value.trim();
 
-        fetch('http://localhost:5000/auth/create-user', {
+        fetch(`${location.protocol}//${location.host}/auth/create-user`, {
             method: 'POST',
             headers: new Headers({
                 'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ const getElemById = (id) => document.getElementById(id);
             alert('Please use secure Link to complete this process');
             return;
         }
-        fetch('http://localhost:5000/auth/reset-password',{
+        fetch(`${location.protocol}//${location.host}/auth/reset-password`,{
             method: 'PATCH',
             headers: new Headers({
                 'Content-Type': 'application/json'
@@ -98,7 +98,7 @@ const getElemById = (id) => document.getElementById(id);
         console.log('Password mismatch');
         return 'Password mismatch';
     }
-        fetch('http://localhost:5000/auth/isAdmin', {
+        fetch(`${location.protocol}//${location.host}/auth/isAdmin`, {
             method: 'POST',
             headers: new Headers({
                 'Content-Type': 'application/json',
