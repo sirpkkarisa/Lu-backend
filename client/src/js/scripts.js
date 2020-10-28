@@ -2,6 +2,8 @@
     //DOM Elements and their EVENTS
     const getElemById = (id) => (document.getElementById(id));
     const createElem = (elem) => document.createElement(elem);
+    const url = `${location.protocol}//${location.host}/`;
+    
     const formatDate = (dt) => {
             if (!dt) {
                 return '--';
@@ -182,7 +184,7 @@ if (localStorage.getItem('token')) {
         getElemById('comment-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const comment = getElemById('comment-input').value.trim();
-            fetch(`http://localhost:5000/articles/${id}/comment`, {
+            fetch(`${url}/articles/${id}/comment`, {
                 method: 'POST',
                 headers: new Headers({
                     'Content-Type': 'application/json',
@@ -233,7 +235,7 @@ if (localStorage.getItem('token')) {
                 let article = getElemById('article').value;
                 let authorId = localStorage.getItem('userId');
 
-                fetch(`http://localhost:5000/articles/${articleId}`, {
+                fetch(`${url}/articles/${articleId}`, {
                     method: 'PATCH',
                     headers: new Headers({
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -350,7 +352,6 @@ if (localStorage.getItem('token')) {
             getData({ uid, currentPassword, newPassword, END_POINT: 'auth/change-password'});
          })
      });
-    const url = `${location.protocol}//${location.host}/`;
     let END_POINT = 'auth/signin';
     
     let id =''
