@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="shortcut icon" href="./src/resources/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/mobile-styles.css">
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
     <title>LU Social Network-Let's Connect</title>
 </head>
@@ -14,6 +15,7 @@
         @Search bar 
         @Navbar which contains the different pages that can be visited while in the site
      -->
+     <div id="desktop-main">
     <header>
         <!-- @The logo is an image file which contains both the Laikipia Badge as well as the Laikipia University Official title name -->
         <div class="upper-header">
@@ -129,7 +131,7 @@
                         <input type="text" required placeholder="Article title" id="article-title">
                     </div>
                     <div class="input-div">
-                        <textarea id="article" style="width: 300px;height:100px;resize:none;" required placeholder="Create Article"></textarea>
+                        <textarea id="article" required placeholder="Create Article"></textarea>
                     </div>
                     <div class="input-div">
                         <button type="submit" id="btn-post">Post</button>
@@ -153,10 +155,11 @@
         </div>
         <div class="articles-div"  id="articles-div"></div>
         <div class="article-item d-none" id="article-item">
+            <div id="the-article-div"></div>
             <div class="comment-div display-flex">
                 <form class="comment-form" id="comment-form">
                     <div class="input-div">
-                        <textarea id="comment-input" required placeholder="Type Comment here.." cols="30" rows="5"></textarea>
+                        <textarea id="comment-input" required placeholder="Type Comment here.."></textarea>
                     </div>
                     <div class="input-div">
                         <button type="submit" id="btn-comment">Comment</button>
@@ -210,10 +213,140 @@
            </div>
        </section>
          </main>
+        </div>
+         <!-- MOBILE VIEW AND SMALL SCREENS -->
+        <div id="mobile-main">
+                    <header>
+                <!-- @The logo is an image file which contains both the Laikipia Badge as well as the Laikipia University Official title name -->
+                    <div class="m-upper-header">
+                        <!-- Logo Div -->
+                        <div class="logo">
+                            <!-- The image is enclosed with a link so that when clicked, it takes you to the Official site home page-->
+                            <a href="https://www.laikipia.ac.ke/"><img src="./src/resources/logo.png" alt="Laikipia University" title="Laikipia University"></a>
+                        </div>
+                        <div class="search-div">
+                             <button id="toggle-btn">Show</button>
+                            <form>
+                                <div class="input-div">
+                                    <input type="text" placeholder="Search Here ..." class="search-area">
+                                </div>
+                                <div class="input-div">
+                                    <button type="submit">Search</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- @Navbar -->
+                    <div class="nav-div">
+                           
+                        <nav id="navbar" class="d-none">
+                            <!-- The unordered list contains the navigational links for different pages -->
+                            <ul>
+                                <li ><a href="https://www.laikipia.ac.ke/">Home</a></li>
+                                <li><a href="https://www.laikipia.ac.ke/About-LU">About LU <span class="nav-heart">&hearts;</span></a></li>
+                                <li><a href="https://www.laikipia.ac.ke/governance">Governance <span class="nav-heart">&hearts;</span></a></li>
+                                <li><a href="https://www.laikipia.ac.ke/Admissions">Admissions <span class="nav-heart">&hearts;</span></a></li>
+                                <li><a href="https://www.laikipia.ac.ke/Academics">Academics <span class="nav-heart">&hearts;</span></a></li>
+                                <li><a href="https://www.laikipia.ac.ke/Research">Reasearch <span class="nav-heart">&hearts;</span></a></li>
+                                <li><a href="https://www.laikipia.ac.ke/library">Library <span class="nav-heart">&hearts;</span></a></li>
+                                <li><a href="https://www.laikipia.ac.ke/students">Student Life <span class="nav-heart">&hearts;</span></a></li>
+                                <li><a href="https://www.laikipia.ac.ke/#">Media Center <span class="nav-heart">&hearts;</span></a></li>
+                                <li><a href="https://www.laikipia.ac.ke/contact-us">Contact Us <span class="nav-heart">&hearts;</span></a></li>
+                                <!-- This is the entry page for this Section -->
+                                <li class="active"><a href="index.html">Social Net</a></li>
+                                <li class="active"><a href="index.html" onclick="localStorage.clear()">Log Out</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+            </header>
+            <div>
+                      <!-- Login Page -->
+                    <div id="m-login-div">
+                        <form id="m-login-form">
+                            <div id="m-status"></div>
+                            <p>
+                                <input type="text" placeholder="E-mail/Registration Number" id="m-login-username" required></p>
+                               <p> <input type="password" placeholder="Password" id="m-login-password" required></p>
+                               <p> <button type="submit" class="login-btn" id="m-login-btn">Login</button></p>
+                                <a href="#" id="m-forgot-password-link">Forgot Password?</a>
+                                <a href="#" id="m-change-password-link">Change Password?</a>
+                        </form>
+                    </div>
+                    <div style="display: none;" id="m-main-section">
+                        <ul id="m-ul-nav">
+                            <li class="active" id="m-to-articles-section">Articles</li>
+                            <li id="m-to-resources-section">Resources</li>
+                            <li id="m-to-chats-section">Chats</li>
+                        </ul>
+                        <div id="m-form-div">
+                            <form id="m-articles-form">
+                                <p>
+                                    <input type="text" id="m-article-title" required>
+                                </p>
+                                <p>
+                                    <textarea id="m-article-body" rows="5" required></textarea>
+                                </p>
+                                <p><button type="submit">Post</button></p>
+                            </form>
+                            <form id="m-resources-form" class="d-none">
+                                <p>
+                                    <input type="file" id="m-resource" required>
+                                </p>
+                                <p><button type="submit">Post</button></p>
+                            </form>
+
+                        </div>
+                        <div id="m-articles-div">
+                        </div>
+                         <div class="d-none" id="m-resources-div">
+                        </div>
+                         <div class="d-none" id="m-chats-div">
+                            <div id="m-chat-status"></div>
+                            <div id="m-chats">
+                            </div>
+                            <p>
+                                <input type="text" id="m-chat-input">
+                                <button id="m-send-btn" type="button">Send</button>
+                            </p>
+                        </div>
+                    </div>
+            </div>
+        </div>
     <div class="error-div" id="error-div" style="display: none;" >
         <div class="error-status" id="error-status"></div>
     </div>
+     <script type="text/javascript">
+        const fun =()=>{
+        const width = window.innerWidth;
+        if (width < 620) {
+            document.getElementById('desktop-main').classList.add('d-none');
+            document.getElementById('mobile-main').classList.remove('d-none');
+
+        } else if (width > 620){
+            document.getElementById('desktop-main').classList.remove('d-none');
+            document.getElementById('mobile-main').classList.add('d-none');
+        }
+        }
+        (()=> {
+            setInterval(()=>fun(),10);
+            let hide = document.getElementById('navbar').classList[0] ==='d-none' ? true : false
+            document.getElementById('toggle-btn').addEventListener('click',(e) => {
+                if (hide) {
+                    document.getElementById('navbar').classList.remove('d-none');
+                    e.target.textContent = 'Hide';
+                } else {
+                    document.getElementById('navbar').classList.add('d-none');
+                    e.target.textContent = 'Show'
+                }
+                hide = !hide;
+            })
+        })()
+        fun();
+    </script>
      <script src="./src/js/scripts.js">
     </script>
+     <script src="./src/js/m-scripts.js">
+    </script>
+   
     </body>
 </html>

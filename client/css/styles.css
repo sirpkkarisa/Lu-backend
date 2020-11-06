@@ -8,7 +8,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   color: #444;
   height: 100vh;
-  width: 100vw;
+  width: 100%;
 }
 /* Header */
 @media(min-width: 621px){
@@ -87,17 +87,6 @@ a {
 ul {
   list-style: none;
 }
-/* .active  {
-  background-color: grey;
-  height: 34px;
-  padding-top: 1rem;
-  padding-left: 0.3rem;
-  padding-right: 0.3rem;
-  margin-top: -1rem;
-} */
-/* .active:hover {
-  background-color: #fff;
-} */
 
 
 /*
@@ -152,6 +141,7 @@ main .login-btn {
   margin-left: 1rem;
   height: 70vh;
   float: left;
+  width: 50%;
 }
 section form {
   display: inline-flex;
@@ -202,7 +192,9 @@ section .breadcrumb {
   background-color:#eee;
   font-family: Arial, Helvetica, sans-serif;
   padding: 7px;
-  width: 100%;
+  width: 300px;
+  height: 100px;
+  resize: none;
 }
 
 /* right section */
@@ -219,7 +211,7 @@ section .breadcrumb {
   scroll-behavior: auto;
   margin-left: auto;
 }
-article {
+.articles-div article {
   padding: 1rem;
   padding-top: 3px;
   margin-top: 5px;
@@ -238,31 +230,32 @@ small {
 } 
 
 .article-item {
-  float: right;
-  width: 50%;
-  margin-top: 18rem; 
-}
-
-.article-item form, .the-article{
   position: fixed;
-}
-.the-article {
-  width: 45%;
+  top: 18rem;
+  left: 50%;
+  overflow-y: scroll;
 }
 
 .article-item form {
-  margin-top: 10rem;
+  position: relative;
   margin-bottom: -5rem;
 }
-.comment-div form {
-  margin-top: 7rem;
+#comment-input {
+  width: 250px;
+  height: 70px;
+}
+.comment-div {
+  margin-top: 1rem;
+  scroll-behavior: auto;
 }
 .comment-div article {
   width: 60%;
   float: right;
 }
 .comments{
-  margin-top: 15rem;
+  margin-top: 3rem;
+  scroll-behavior: auto;
+  height: 100%;
 }
 .item-title {
   display: flex;
@@ -407,17 +400,13 @@ small {
     padding: 5px;
     margin-left: 65%;
     border-radius: 12px;
-    /* margin-top: 5px; */
     width: 30%;
     min-height: 30px;
     overflow-x: inherit;
     border-top-right-radius: 3px;
 }
 .authorLeft {
-    /* padding: 5px; */
     margin-left: 65%;
-    /* bottom: -9px; */
-    /* width: 30%; */
     overflow-x: inherit;
 }
 
@@ -515,31 +504,76 @@ div.main {
 
 
 @media(max-width: 740px ){
-  header .upper-header {
+ /* header .upper-header {
     display: flex;
     flex-direction: column;
-  }
-  .nav-div ul {
+    position: relative;
+    z-index: 1;
+  }*/
+ /* .nav-div ul {
     display: flex;
     flex-wrap: wrap;
   }
   .nav-div ul li {
     margin-right: 1.2rem;
     line-height: 1.5rem;
-  }
+  }*/
   .static-div {
     background: none;
     position: fixed;
-    top: 2.5rem;
+    top: 37vh;
     height: 50vh;
   }
+  .resources-div, .articles-div {
+  float: right;
+  width: 50%;
+  margin-top: 22rem;
+  scroll-behavior: auto;
+  margin-left: auto;
+}
+  
+
+.article-item {
+  position: fixed;
+  top: 21rem;
+  left: 50%;
+  overflow-y: scroll;
+}
+.article-item i {
+  position: relative;
+  right: 10px;
+}
+.article-item form {
+  position: relative;
+  margin-bottom: -5rem;
+}
+#comment-input {
+  width: 200px;
+  height: 50px;
+  resize: none;
+  border-radius: 5px;
+}
+.comment-div {
+  margin-top: 1rem;
+  scroll-behavior: auto;
+}
+.comment-div article {
+  width: 60%;
+  float: right;
+}
+.comments{
+  margin-top: 3rem;
+  scroll-behavior: auto;
+  height: 100%;
+}
+
   .forgot-password, .change-password  {
     margin-top: 22rem;
   }
   .forgot-password,.change-password .form-div {
     width: 50%;
   }
-  .article-item  {
+ /* .article-item  {
     margin-top: 20rem;
   }
   .comment-form{
@@ -568,6 +602,19 @@ div.main {
   .document {
     display: flex;
     flex-direction: column;
+  }*/
+}
+
+@media(max-width: 700px) {
+  .static-div {
+    width: 45%;
+  }
+  .left-article-section textarea {
+    width: 250px;
+    height: 100px;
+  }
+  .left-article-section #article-title {
+    width: 250px;
   }
 }
 
@@ -672,12 +719,6 @@ div.main {
     display: flex;
     flex-direction: column;
   }
- /* .gender {
-    margin-top: 2rem; 
-  }
-  .radio {
-    color: red;
-  }*/
   .comment-div article {
     float: left;
     border-radius: 1rem;

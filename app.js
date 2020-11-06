@@ -29,6 +29,12 @@ app.use('/uploaded_docs',express.static(path.join(__dirname, 'uploaded_documents
 app.use('/auth', usersRoutes);
 app.use('/articles', articlesRoutes);
 app.use('/documents', documentsRoutes);
-// app.use('/comments', commentsRoutes);
+app.use((req,res)=>{
+	res.send(`
+		<body style="background-color:red; color:white;">
+			<h1>Page Not Found!</h1>
+		</body>
+		`)
+});
 
 module.exports = app;

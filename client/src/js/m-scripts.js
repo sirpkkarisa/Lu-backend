@@ -62,52 +62,60 @@ if (localStorage.getItem('token')) {
         fd.append('document', doc, doc.name);
         getData({method: 'POST',fd});
     })
-     getElemById('to-articles-section').addEventListener('click', (e) => {
-        e.preventDefault();
-        getElemById('articles-section').classList.remove('d-none');
-        getElemById('articles-div').classList.remove('d-none');
-        if (getElemById('articles-div').classList.value === 'articles-div') {
+     getElemById('m-to-articles-section').addEventListener('click', (e) => {
+        getElemById('m-articles-form').classList.remove('d-none');
+        getElemById('m-articles-div').classList.remove('d-none');
+        getElemById('m-to-resources-section').classList.remove('active');
+        getElemById('m-to-chats-section').classList.remove('active');
+        e.target.classList.add('active');
+        if (getElemById('m-articles-div').classList.value === 'm-articles-div') {
             getArticles();
         } 
-        getElemById('resources-section').classList.add('d-none');
-        getElemById('resources-div').classList.add('d-none');
+        getElemById('m-resources-form').classList.add('d-none');
+        getElemById('m-resources-div').classList.add('d-none');
         getElemById('article-item').classList.add('d-none');
-        getElemById('chats-section').classList.add('d-none');
+        getElemById('m-chats-div').classList.add('d-none');
     });
-      getElemById('to-resources-section').addEventListener('click',(e)=> {
-        e.preventDefault();
-        getElemById('resources-section').classList.remove('d-none');
-        getElemById('resources-div').classList.remove('d-none');
-        getElemById('articles-section').classList.add('d-none');
-        getElemById('articles-div').classList.add('d-none');
+      getElemById('m-to-resources-section').addEventListener('click',(e)=> {
+        e.target.classList.add('active');
+        getElemById('m-resources-form').classList.remove('d-none');
+        getElemById('m-resources-div').classList.remove('d-none');
+        getElemById('m-to-articles-section').classList.remove('active');
+        getElemById('m-to-chats-section').classList.remove('active');
+        // getElemById('m-articles-section').classList.add('d-none');
+        getElemById('m-articles-div').classList.add('d-none');
+        getElemById('m-articles-form').classList.add('d-none');
         getElemById('article-item').classList.add('d-none');
-        getElemById('chats-section').classList.add('d-none');
+        getElemById('m-chats-div').classList.add('d-none');
         getDocuments();
     });
-      getElemById('to-chats-section').addEventListener('click',(e)=> {
-        e.preventDefault();
-        getElemById('chats-section').classList.remove('d-none');
-        getElemById('articles-section').classList.add('d-none');
-        getElemById('articles-div').classList.add('d-none');
-        getElemById('resources-section').classList.add('d-none');
-        getElemById('resources-div').classList.add('d-none');
+      getElemById('m-to-chats-section').addEventListener('click',(e)=> {
+        getElemById('m-chats-div').classList.remove('d-none');
+        getElemById('m-to-resources-section').classList.remove('active');
+        getElemById('m-to-articles-section').classList.remove('active');
+        e.target.classList.add('active');
+        // getElemById('articles-section').classList.add('d-none');
+        getElemById('m-articles-div').classList.add('d-none');
+        getElemById('m-articles-form').classList.add('d-none');
+        getElemById('m-resources-form').classList.add('d-none');
+        getElemById('m-resources-div').classList.add('d-none');
         getElemById('article-item').classList.add('d-none');
         const socket = io.connect(url);
-        const chatsDiv = getElemById('chats');
+        const chatsDiv = getElemById('m-chats');
         const div = createElem('div');
 
 
         socket.emit('loggedIn',{userId: localStorage.getItem('userId')});
         socket.on('welcome', data=>{
-            getElemById('chat-status').innerHTML=`${data.msg}`;
+            getElemById('m-chat-status').innerHTML=`${data.msg}`;
             setTimeout(() => {
-            getElemById('chat-status').style.display = 'none';
+            getElemById('m-chat-status').style.display = 'none';
         }, 2000);
         });
-        getElemById('chat-input').addEventListener('keypress',(e)=>{
-
-               if (e.target.value.trim() && e.keyCode ===13){
-                    socket.emit('send-chat',{chat: e.target.value, authorId: localStorage.getItem('userId')});
+        getElemById('m-send-btn').addEventListener('click',()=>{
+            const chat = getElemById('m-chat-input').value.trim();
+               if (chat.length > 0){
+                    socket.emit('send-chat',{chat, authorId: localStorage.getItem('userId')});
                     return;
                 }
             });
@@ -130,7 +138,7 @@ if (localStorage.getItem('token')) {
         })
      socket.on('status',(data)=>{
             if (data.msg=='clear') {
-                getElemById('chat-input').value = '';
+                getElemById('m-chat-input').value = '';
                 return;
             }
         })
@@ -255,23 +263,23 @@ if (localStorage.getItem('token')) {
             
         })
     }
-    getElemById('login-form').addEventListener('submit', (e) => {
+    getElemById('m-login-form').addEventListener('submit', (e) => {
         e.preventDefault();
         let method = 'POST';
-        const uid = getElemById('login-username').value.trim();
-        const password = getElemById('login-password').value.trim();
+        const uid = getElemById('m-login-username').value.trim();
+        const password = getElemById('m-login-password').value.trim();
         if (uid.length <1 || password.length <1) {
-            getElemById('status')
+            getElemById('m-status')
             .innerHTML=`<span class="error">Invalid Login</span>`;
             return;
         }
         getData({uid,password, method})
     });
-   getElemById('articles-div').addEventListener('click',async e=> {
+   getElemById('m-articles-div').addEventListener('click',async e=> {
                 if (e.target.tagName === 'ARTICLE' || e.target.tagName === 'H5' || e.target.tagName === 'SMALL') {
                     const dataId = e.target.getAttribute('data-id');
                     getArticle(dataId);
-                    getElemById('articles-div').classList.add('d-none');
+                    getElemById('m-articles-div').classList.add('d-none');
                     getElemById('article-item').classList.remove('d-none');
                 }            
             });
@@ -297,7 +305,7 @@ if (localStorage.getItem('token')) {
                 <br>
                 <small style='font-size: 7px;'>${formatDate(localStorage.getItem('createdOn'))}</small>
         `
-        getElemById('articles-div').appendChild(articleE)
+        getElemById('m-articles-div').appendChild(articleE)
 
         getElemById('article-title').value = '';
         getElemById('article').value = '';
@@ -442,12 +450,12 @@ if (localStorage.getItem('token')) {
         })
     } 
     if (localStorage.getItem('token')) {
-        getElemById('login-div').style.display ='none';
-        getElemById('main-section').removeAttribute('style');
+        getElemById('m-login-div').style.display ='none';
+        getElemById('m-main-section').removeAttribute('style');
         END_POINT = 'articles';
     }else {
-        getElemById('main-section').style.display ='none';
-        getElemById('main-section').setAttribute('hidden',true);
+        getElemById('m-main-section').style.display ='none';
+        getElemById('m-main-section').setAttribute('hidden',true);
     }
     const getData = async (data)=> {
         try {
@@ -502,7 +510,7 @@ if (localStorage.getItem('token')) {
                                 </div>`;
                     
                 })
-                getElemById('resources-div').innerHTML = docOutput;
+                getElemById('m-resources-div').innerHTML = docOutput;
                 // for (let i = 0; i < getElemById('resources-div').children.length; i++) {
                 //     getElemById('resources-div').children[i].addEventListener('click', () => {
                 //         getDocuments(idArr[i])                
@@ -525,7 +533,7 @@ if (localStorage.getItem('token')) {
                 });
 
              }
-            getElemById('articles-div').innerHTML = articleOutput;
+            getElemById('m-articles-div').innerHTML = articleOutput;
 
             if (data.articleId && data.articleId === res.data[0].article_id) {
 
@@ -569,7 +577,7 @@ if (localStorage.getItem('token')) {
                 return;
             }
             if (res.error === 'No articles') {
-                getElemById('articles-div').innerHTML = `<div>No Articles!<br>Be the first one to Post</div>`
+                getElemById('m-articles-div').innerHTML = `<div>No Articles!<br>Be the first one to Post</div>`
                 return;
             }
         }     

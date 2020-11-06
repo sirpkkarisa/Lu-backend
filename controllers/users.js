@@ -135,7 +135,6 @@ exports.changePassword = (req, res) => {
     // This can either be email or registeration number
     const { uid, currentPassword, newPassword } = req.body;
 
-    console.log(currentPassword)
     if (uid === undefined || currentPassword === undefined || newPassword === undefined) {
       return res.status(400)
         .json({

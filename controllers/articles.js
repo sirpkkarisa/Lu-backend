@@ -24,39 +24,39 @@ pool.query(`SELECT * FROM lu_users WHERE user_id='${authorId}'`)
                 })
             }
           pool.query('INSERT INTO lu_articles VALUES($1,$2,$3,$4)', [articleId, articleTitle, article, authorId])
-         .then(
-             () => {
-         pool.query('SELECT * FROM lu_articles WHERE article_id=$1', [articleId])
-            .then(
-            ({ rows }) => {
-              if (rows.length === 0) {
-                return res.status(403)
-                  .json({
-                    status: ' error',
-                    error: 'Forbidden',
-                  });
-              }
-              return res.status(200)
-                .json({
-                  status: 'success',
-                  data: {
-                    message: 'New article created!',
-                    article: rows,
+               .then(
+                   () => {
+               pool.query('SELECT * FROM lu_articles WHERE article_id=$1', [articleId])
+                  .then(
+                  ({ rows }) => {
+                    if (rows.length === 0) {
+                      return res.status(403)
+                        .json({
+                          status: ' error',
+                          error: 'Forbidden',
+                        });
+                    }
+                    return res.status(200)
+                      .json({
+                        status: 'success',
+                        data: {
+                          message: 'New article created!',
+                          article: rows,
+                        },
+                      });
                   },
-                });
+                )
+                .catch(
+                  (error) => {
+                    res.status(501)
+                      .json({
+                        status: 'error',
+                        error: `${error}`,
+                      });
+                  },
+                );
             },
           )
-          .catch(
-            (error) => {
-              res.status(501)
-                .json({
-                  status: 'error',
-                  error: `${error}`,
-                });
-            },
-          );
-      },
-    )
     .catch(
       (error) => {
         res.status(501)
@@ -211,6 +211,14 @@ exports.deleteArticle = (req, res) => {
   const { articleId } = req.params;
   const { authorId } = req.body;
   
+  // console.log(articleId+'\n'+authorId)
+  if (authorId === undefined) {
+    return res.status(401)
+              .json({
+                status: 'error',
+                error:'Unauthorized'
+              });
+  }
   pool.query(`SELECT * FROM lu_articles WHERE article_id='${articleId}' AND author_id='${authorId}'`)
     .then(
       ({ rows }) => {
